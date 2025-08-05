@@ -1,0 +1,12 @@
+15/12/2024, 09:30 - Juan Pérez: Buenos días, le paso el carro ABC-123 a María González
+15/12/2024, 09:45 - María González: Perfecto, recibido. Gracias Juan
+15/12/2024, 10:15 - Carlos Rodríguez: El carro XYZ-456 se lo paso a Pedro López
+15/12/2024, 10:30 - Pedro López: Ok Carlos, ya lo tengo
+15/12/2024, 11:00 - Ana Martín: Transferir carro DEF-789 a Luis Sánchez
+15/12/2024, 11:15 - Luis Sánchez: Recibido Ana, todo en orden
+15/12/2024, 14:20 - Miguel Torres: Roberto Silva recibe el carro GHI-012
+15/12/2024, 14:35 - Roberto Silva: Confirmado Miguel
+15/12/2024, 15:45 - Laura Jiménez: Carro JKL-345 para Fernando Ruiz
+15/12/2024, 16:00 - Fernando Ruiz: Perfecto Laura, ya estoy con el vehículo
+15/12/2024, 17:30 - Diego Morales: Le entrego el auto MNO-678 a Carmen Vega
+15/12/2024, 17:45 - Carmen Vega: Recibido Diego, muchas gracias
