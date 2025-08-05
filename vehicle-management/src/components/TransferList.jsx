@@ -1,3 +1,5 @@
+import { DEPARTMENT_INFO } from '../constants/index.js';
+
 const TransferList = ({ transfers, getDriverById, getVehicleById }) => {
   const formatDate = (date) => {
     if (!date) return 'Fecha no disponible';
@@ -23,6 +25,30 @@ const TransferList = ({ transfers, getDriverById, getVehicleById }) => {
       default:
         return <span className="status-badge status-inactive">Desconocido</span>;
     }
+  };
+
+  const getDepartmentBadge = (department) => {
+    if (!department) {
+      return <span className="status-badge status-inactive">Sin departamento</span>;
+    }
+    
+    const deptInfo = DEPARTMENT_INFO[department];
+    if (!deptInfo) {
+      return <span className="status-badge status-inactive">{department}</span>;
+    }
+    
+    return (
+      <span 
+        className="status-badge" 
+        style={{ 
+          backgroundColor: `${deptInfo.color}20`,
+          color: deptInfo.color,
+          border: `1px solid ${deptInfo.color}40`
+        }}
+      >
+        {deptInfo.icon} {deptInfo.name}
+      </span>
+    );
   };
 
   if (transfers.length === 0) {
@@ -60,7 +86,8 @@ const TransferList = ({ transfers, getDriverById, getVehicleById }) => {
                 <th>De</th>
                 <th>Para</th>
                 <th>Fuente</th>
-                <th>Detalles</th>
+                <th>Departamento</th>
+                <th className="mobile-hidden">Detalles</th>
               </tr>
             </thead>
             <tbody>
@@ -116,6 +143,9 @@ const TransferList = ({ transfers, getDriverById, getVehicleById }) => {
                       {getSourceBadge(transfer.source)}
                     </td>
                     <td>
+                      {getDepartmentBadge(transfer.department)}
+                    </td>
+                    <td className="mobile-hidden">
                       <div className="text-sm">
                         {transfer.reason && (
                           <div className="mb-xs">

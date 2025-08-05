@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Transfer, Driver, Vehicle, COLLECTIONS } from '../models';
 import firebaseService from '../services/firebaseService';
+import { DEPARTMENTS, DEPARTMENT_INFO } from '../constants/index.js';
+import { SimpleDepartmentSelector } from '../components/DepartmentSelector.jsx';
 import TransferList from '../components/TransferList';
 
 const Transfers = () => {
@@ -13,6 +15,7 @@ const Transfers = () => {
     vehicleId: '',
     driverId: '',
     source: '',
+    department: '',
     dateFrom: '',
     dateTo: ''
   });
@@ -65,6 +68,7 @@ const Transfers = () => {
       vehicleId: '',
       driverId: '',
       source: '',
+      department: '',
       dateFrom: '',
       dateTo: ''
     });
@@ -86,6 +90,11 @@ const Transfers = () => {
 
       // Filtro por fuente
       if (filters.source && transfer.source !== filters.source) {
+        return false;
+      }
+
+      // Filtro por departamento
+      if (filters.department && transfer.department !== filters.department) {
         return false;
       }
 
@@ -208,6 +217,25 @@ const Transfers = () => {
                 <option value="">Todas las fuentes</option>
                 <option value="manual">Manual</option>
                 <option value="whatsapp">WhatsApp</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Departamento</label>
+              <select
+                value={filters.department}
+                onChange={(e) => handleFilterChange('department', e.target.value)}
+                className="form-select"
+              >
+                <option value="">Todos los departamentos</option>
+                {Object.values(DEPARTMENTS).map(department => {
+                  const deptInfo = DEPARTMENT_INFO[department];
+                  return (
+                    <option key={department} value={department}>
+                      {deptInfo.icon} {deptInfo.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
 

@@ -7,9 +7,10 @@ Una aplicación web completa desarrollada con **Vite + React** y **Firebase** pa
 ### ✨ Funcionalidades
 - **CRUD Completo**: Gestión de conductores y vehículos con operaciones crear, leer, actualizar y eliminar
 - **Analizador de WhatsApp**: Procesamiento automático de chats (.txt/.csv) para extraer transferencias
+- **Gestión por Departamentos**: Organización de data por Sucre y Córdoba con selectores visuales
 - **Detección de Cambios**: Sistema inteligente que detecta si ya se procesó data del día y qué cambió
 - **Alertas Automáticas**: Envío de emails a `dylan01aponte@gmail.com` si no se procesa data diariamente
-- **Historial de Transferencias**: Registro completo con filtros avanzados
+- **Historial de Transferencias**: Registro completo con filtros avanzados por departamento
 - **Dashboard Interactivo**: Estadísticas en tiempo real y acciones rápidas
 - **Estados Dinámicos**: Gestión de estados (activo/inactivo/mantenimiento)
 - **Asignación Inteligente**: Control de qué conductor tiene cada vehículo
@@ -137,16 +138,18 @@ El analizador detecta automáticamente estos patrones:
 - `"carro JKL-345 para Ana"`
 
 #### Proceso de Análisis
-1. **Upload**: Arrastrar archivo o seleccionar
-2. **Análisis**: Procesamiento automático con IA
-3. **Validación**: Revisión de coincidencias encontradas
-4. **Corrección**: Ajustes manuales si es necesario
-5. **Guardado**: Almacenamiento en base de datos
+1. **Departamento**: Seleccionar entre Sucre 🌊 o Córdoba 🌿
+2. **Upload**: Arrastrar archivo o seleccionar
+3. **Análisis**: Procesamiento automático con IA
+4. **Validación**: Revisión de coincidencias encontradas
+5. **Corrección**: Ajustes manuales si es necesario
+6. **Guardado**: Almacenamiento en base de datos con departamento
 
 ### 📊 Historial de Transferencias
-- **Filtros avanzados**: Por vehículo, conductor, fecha, fuente
-- **Estadísticas**: Contadores dinámicos
-- **Detalles completos**: Información de cada transferencia
+- **Filtros avanzados**: Por vehículo, conductor, fecha, fuente y departamento
+- **Estadísticas**: Contadores dinámicos por departamento
+- **Detalles completos**: Información de cada transferencia con departamento
+- **Visualización**: Badges de colores distintivos para cada departamento
 - **Texto original**: Acceso al mensaje de WhatsApp original
 
 ## 🏗️ Estructura del Proyecto

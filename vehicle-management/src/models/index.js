@@ -1,4 +1,5 @@
 // Modelos de datos para la aplicación
+import { DEPARTMENTS, DEPARTMENT_INFO, isValidEnumValue } from '../constants/index.js';
 
 // Estados disponibles para vehículos
 export const VEHICLE_STATES = {
@@ -138,6 +139,7 @@ export class Transfer {
     reason = '',
     extractedText = '',
     source = 'manual', // 'manual' o 'whatsapp'
+    department = DEPARTMENTS.SUCRE, // Departamento por defecto
     createdAt = null,
     updatedAt = null
   } = {}) {
@@ -149,6 +151,7 @@ export class Transfer {
     this.reason = reason;
     this.extractedText = extractedText;
     this.source = source;
+    this.department = department;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -167,6 +170,10 @@ export class Transfer {
     
     if (!this.transferDate) {
       errors.push('La fecha de transferencia es requerida');
+    }
+    
+    if (!this.department || !isValidEnumValue(this.department, DEPARTMENTS)) {
+      errors.push('Departamento inválido o no especificado');
     }
     
     return {

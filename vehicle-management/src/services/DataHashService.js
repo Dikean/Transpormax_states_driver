@@ -111,7 +111,8 @@ export class DataHashService {
       transfersCount: this._normalizeNumber(data.transfersCount),
       transfers: this._normalizeTransfers(data.transfers),
       filesProcessed: this._normalizeFilesList(data.filesProcessed),
-      source: this._normalizeString(data.source)
+      source: this._normalizeString(data.source),
+      department: this._normalizeString(data.department)
     };
     
     return normalized;

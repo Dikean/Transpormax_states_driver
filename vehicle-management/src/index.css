@@ -526,6 +526,48 @@ p {
 /* Z-index */
 .z-50 { z-index: 50; }
 
+/* Department Selector */
+.department-selector {
+  --dept-sucre-color: #3B82F6;
+  --dept-cordoba-color: #10B981;
+}
+
+.department-btn {
+  position: relative;
+  min-height: 80px;
+  user-select: none;
+}
+
+.department-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.department-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.department-btn.selected {
+  animation: departmentSelect 0.3s ease-out;
+}
+
+@keyframes departmentSelect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1.02); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .department-btn {
+    min-height: 60px;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .department-btn .text-2xl {
+    font-size: 1.5rem;
+  }
+}
+
 .mb-0 { margin-bottom: 0; }
 .mb-sm { margin-bottom: var(--spacing-sm); }
 .mb-md { margin-bottom: var(--spacing-md); }

@@ -3,8 +3,10 @@ import { Transfer, Driver, Vehicle, COLLECTIONS } from '../models';
 import firebaseService from '../services/firebaseService';
 import whatsappParser from '../utils/whatsappParser';
 import alertService from '../services/alertService';
+import { DEPARTMENTS } from '../constants/index.js';
 import FileUpload from '../components/FileUpload';
 import TransferPreview from '../components/TransferPreview';
+import DepartmentSelector, { useDepartmentSelector } from '../components/DepartmentSelector.jsx';
 
 const ChatUpload = () => {
   const [drivers, setDrivers] = useState([]);
@@ -16,6 +18,9 @@ const ChatUpload = () => {
   const [processingFile, setProcessingFile] = useState(false);
   const [changeDetection, setChangeDetection] = useState(null);
   const [showChangeWarning, setShowChangeWarning] = useState(false);
+  
+  // Hook para gestionar departamento seleccionado
+  const [selectedDepartment, handleDepartmentChange, departmentInfo] = useDepartmentSelector(DEPARTMENTS.SUCRE);
 
   // Cargar datos al montar el componente
   useEffect(() => {
@@ -67,7 +72,8 @@ const ChatUpload = () => {
         transfersCount: transfers.length,
         transfers: transfers,
         filesProcessed: [file.name],
-        source: 'whatsapp'
+        source: 'whatsapp',
+        department: selectedDepartment
       };
 
       const changeInfo = await alertService.detectChanges(today, processingData);
@@ -116,6 +122,7 @@ const ChatUpload = () => {
 
       return {
         ...transfer,
+        department: selectedDepartment, // Agregar departamento seleccionado
         vehicleMatch: vehicle,
         fromDriverMatch: fromDriver,
         toDriverMatch: toDriver,
@@ -192,7 +199,8 @@ const ChatUpload = () => {
           transferDate: transferData.dateTime || new Date(),
           reason: 'Transferencia desde WhatsApp',
           extractedText: transferData.originalText,
-          source: 'whatsapp'
+          source: 'whatsapp',
+          department: transferData.department || selectedDepartment
         });
 
         const transferId = await firebaseService.create(COLLECTIONS.TRANSFERS, transfer.toFirestore());
@@ -308,10 +316,29 @@ const ChatUpload = () => {
         </div>
       )}
 
+      {/* Selector de departamento */}
+      <div className="card mb-lg">
+        <div className="card-header">
+          <h3 className="mb-0">Configuración</h3>
+        </div>
+        <div className="card-body">
+          <DepartmentSelector
+            selectedDepartment={selectedDepartment}
+            onDepartmentChange={handleDepartmentChange}
+            disabled={processingFile}
+          />
+        </div>
+      </div>
+
       {/* Upload de archivo */}
       <div className="card mb-lg">
         <div className="card-header">
           <h3 className="mb-0">Subir Archivo de Chat</h3>
+          <div className="text-xs text-gray">
+            Departamento: <span className="font-semibold" style={{ color: departmentInfo.color }}>
+              {departmentInfo.icon} {departmentInfo.name}
+            </span>
+          </div>
         </div>
         <div className="card-body">
           <FileUpload
@@ -319,6 +346,7 @@ const ChatUpload = () => {
             loading={processingFile}
             acceptedTypes=".txt,.csv"
             maxSize={10} // 10MB
+            disabled={!selectedDepartment}
           />
           
           <div className="mt-md">

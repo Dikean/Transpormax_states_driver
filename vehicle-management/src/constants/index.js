@@ -58,6 +58,37 @@ export const TRANSFER_SOURCES = Object.freeze({
   WHATSAPP: 'whatsapp'
 });
 
+/**
+ * Departamentos disponibles
+ * @readonly
+ * @enum {string}
+ */
+export const DEPARTMENTS = Object.freeze({
+  SUCRE: 'sucre',
+  CORDOBA: 'cordoba'
+});
+
+/**
+ * Información detallada de departamentos
+ * @readonly
+ */
+export const DEPARTMENT_INFO = Object.freeze({
+  [DEPARTMENTS.SUCRE]: {
+    name: 'Sucre',
+    code: 'SUC',
+    color: '#3B82F6', // Azul
+    icon: '🌊',
+    description: 'Departamento de Sucre'
+  },
+  [DEPARTMENTS.CORDOBA]: {
+    name: 'Córdoba', 
+    code: 'COR',
+    color: '#10B981', // Verde
+    icon: '🌿',
+    description: 'Departamento de Córdoba'
+  }
+});
+
 // ================================
 // CONFIGURACIÓN DE ALERTAS
 // ================================
