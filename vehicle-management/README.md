@@ -7,6 +7,8 @@ Una aplicación web completa desarrollada con **Vite + React** y **Firebase** pa
 ### ✨ Funcionalidades
 - **CRUD Completo**: Gestión de conductores y vehículos con operaciones crear, leer, actualizar y eliminar
 - **Analizador de WhatsApp**: Procesamiento automático de chats (.txt/.csv) para extraer transferencias
+- **Detección de Cambios**: Sistema inteligente que detecta si ya se procesó data del día y qué cambió
+- **Alertas Automáticas**: Envío de emails a `dylan01aponte@gmail.com` si no se procesa data diariamente
 - **Historial de Transferencias**: Registro completo con filtros avanzados
 - **Dashboard Interactivo**: Estadísticas en tiempo real y acciones rápidas
 - **Estados Dinámicos**: Gestión de estados (activo/inactivo/mantenimiento)
@@ -78,7 +80,23 @@ service cloud.firestore {
 }
 ```
 
-### 5. Ejecutar la aplicación
+### 5. Configurar EmailJS (Opcional - Para Alertas)
+
+1. Crear cuenta gratuita en [EmailJS](https://www.emailjs.com/)
+2. Configurar un servicio de email (Gmail, Outlook, etc.)
+3. Crear un template de email
+4. Editar `src/config/emailConfig.js` con tus credenciales:
+
+```javascript
+export const emailConfig = {
+  serviceId: 'tu_service_id',
+  templateId: 'tu_template_id', 
+  userId: 'tu_user_id',
+  adminEmail: 'dylan01aponte@gmail.com'
+};
+```
+
+### 6. Ejecutar la aplicación
 ```bash
 npm run dev
 ```
@@ -194,6 +212,18 @@ El diseño utiliza variables CSS para fácil personalización:
 - **Detección de fechas**: Extracción automática de timestamps
 - **Puntaje de confianza**: Evaluación de la calidad del match
 - **Sugerencias**: Recomendaciones para matches parciales
+
+### Sistema de Detección de Cambios
+- **Verificación diaria**: Detecta si ya se procesó data para una fecha específica
+- **Comparación inteligente**: Identifica qué cambió entre procesamientos
+- **Hash de datos**: Genera firmas únicas para detectar cambios exactos
+- **Recomendaciones**: Sugiere si procesar o no según los cambios detectados
+
+### Sistema de Alertas Automáticas
+- **Verificación periódica**: Chequea cada hora si se debe enviar alerta
+- **Email automático**: Envía alerta a `dylan01aponte@gmail.com` si no se procesa data
+- **Prevención de spam**: Solo una alerta por día sin procesar
+- **Configuración flexible**: Horarios y días personalizables
 
 ### Validación de Datos
 - **Modelos con validación**: Clases con métodos de validación integrados

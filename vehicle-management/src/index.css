@@ -517,6 +517,15 @@ p {
 .hover\:border-secondary:hover { border-color: var(--color-secondary); }
 .hover\:bg-hover:hover { background-color: var(--color-hover); }
 
+/* Posicionamiento */
+.fixed { position: fixed; }
+.bottom-4 { bottom: 1rem; }
+.right-4 { right: 1rem; }
+.max-w-xs { max-width: 20rem; }
+
+/* Z-index */
+.z-50 { z-index: 50; }
+
 .mb-0 { margin-bottom: 0; }
 .mb-sm { margin-bottom: var(--spacing-sm); }
 .mb-md { margin-bottom: var(--spacing-md); }

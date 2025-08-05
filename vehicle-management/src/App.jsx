@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import DailyAlertChecker from './components/DailyAlertChecker';
 import Dashboard from './pages/Dashboard';
 import Drivers from './pages/Drivers';
 import Vehicles from './pages/Vehicles';
@@ -20,6 +21,9 @@ function App() {
             <Route path="/upload" element={<ChatUpload />} />
           </Routes>
         </main>
+        
+        {/* Sistema de alertas diarias */}
+        <DailyAlertChecker />
       </div>
     </Router>
   );

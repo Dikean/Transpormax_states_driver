@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Transfer, Driver, Vehicle, COLLECTIONS } from '../models';
 import firebaseService from '../services/firebaseService';
 import whatsappParser from '../utils/whatsappParser';
+import alertService from '../services/alertService';
 import FileUpload from '../components/FileUpload';
 import TransferPreview from '../components/TransferPreview';
 
@@ -13,6 +14,8 @@ const ChatUpload = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [processingFile, setProcessingFile] = useState(false);
+  const [changeDetection, setChangeDetection] = useState(null);
+  const [showChangeWarning, setShowChangeWarning] = useState(false);
 
   // Cargar datos al montar el componente
   useEffect(() => {
@@ -58,10 +61,33 @@ const ChatUpload = () => {
         return;
       }
 
+      // Detectar cambios con data existente del día
+      const today = new Date();
+      const processingData = {
+        transfersCount: transfers.length,
+        transfers: transfers,
+        filesProcessed: [file.name],
+        source: 'whatsapp'
+      };
+
+      const changeInfo = await alertService.detectChanges(today, processingData);
+      setChangeDetection(changeInfo);
+
       // Enriquecer transferencias con datos de la base de datos
       const enrichedTransfers = enrichTransfers(transfers);
       setParsedTransfers(enrichedTransfers);
-      setSuccess(`Se encontraron ${transfers.length} transferencias potenciales`);
+
+      // Mostrar mensaje según detección de cambios
+      if (changeInfo.hasChanges) {
+        if (changeInfo.isFirstProcessing) {
+          setSuccess(`Se encontraron ${transfers.length} transferencias potenciales (primera vez del día)`);
+        } else {
+          setSuccess(`Se encontraron ${transfers.length} transferencias potenciales (se detectaron cambios)`);
+          setShowChangeWarning(true);
+        }
+      } else {
+        setSuccess(`Se encontraron ${transfers.length} transferencias, pero son idénticas a las ya procesadas hoy`);
+      }
 
     } catch (err) {
       setError('Error procesando archivo: ' + err.message);
@@ -188,8 +214,21 @@ const ChatUpload = () => {
         )
       );
 
+      // Registrar procesamiento diario
+      const today = new Date();
+      const processingData = {
+        transfersCount: savedTransfers.length,
+        transfers: transfersToSave,
+        filesProcessed: [changeDetection?.fileName || 'archivo_whatsapp'],
+        source: 'whatsapp'
+      };
+      
+      await alertService.recordDailyProcessing(today, processingData);
+
       setSuccess(`Se guardaron ${savedTransfers.length} transferencias exitosamente`);
       setParsedTransfers([]);
+      setChangeDetection(null);
+      setShowChangeWarning(false);
 
     } catch (err) {
       setError('Error guardando transferencias: ' + err.message);
@@ -232,6 +271,37 @@ const ChatUpload = () => {
           <button 
             className="btn btn-sm btn-secondary ml-md"
             onClick={clearMessages}
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      {/* Advertencia de cambios detectados */}
+      {showChangeWarning && changeDetection && (
+        <div className="alert alert-warning">
+          <div className="mb-sm">
+            <strong>⚠️ Cambios Detectados</strong>
+          </div>
+          <div className="text-sm">
+            <p>Ya se procesó data para hoy anteriormente. Se detectaron los siguientes cambios:</p>
+            <ul className="mt-sm">
+              {changeDetection.changes.map((change, index) => (
+                <li key={index}>• {change.description}</li>
+              ))}
+            </ul>
+            <p className="mt-sm">
+              <strong>Recomendación:</strong> {changeDetection.recommendation}
+            </p>
+            {changeDetection.oldProcessing && (
+              <p className="text-xs mt-sm">
+                Último procesamiento: {new Date(changeDetection.oldProcessing.timestamp?.seconds * 1000 || changeDetection.oldProcessing.timestamp).toLocaleString()}
+              </p>
+            )}
+          </div>
+          <button 
+            className="btn btn-sm btn-secondary ml-md"
+            onClick={() => setShowChangeWarning(false)}
           >
             ×
           </button>
